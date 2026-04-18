@@ -1,11 +1,11 @@
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 /**
- * Zustand store для корзины.
- * persist — сохраняет состояние в localStorage автоматически.
+ * Zustand store savat uchun.
+ * persist — localStorage ga holatni avtomatik saqlaydi.
  *
- * Структура cartItem:
+ * cartItem tuzilishi:
  *   { id, name, price, image_url, quantity }
  */
 const useCartStore = create(
@@ -13,49 +13,49 @@ const useCartStore = create(
     (set, get) => ({
       items: [],
 
-      // Добавить товар (или увеличить кол-во если уже есть)
+      // Mahsulot qo'shish (yoki agar allaqachon bo'lsa miqdorni oshirish)
       addItem: (product) => {
-        const { items } = get()
-        const existing = items.find((i) => i.id === product.id)
+        const { items } = get();
+        const existing = items.find((i) => i.id === product.id);
         if (existing) {
           set({
             items: items.map((i) =>
-              i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i
+              i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i,
             ),
-          })
+          });
         } else {
-          set({ items: [...items, { ...product, quantity: 1 }] })
+          set({ items: [...items, { ...product, quantity: 1 }] });
         }
       },
 
-      // Убрать один экземпляр товара
+      // Mahsulotning bir nusxasini o'chirish
       removeItem: (id) => {
-        set({ items: get().items.filter((i) => i.id !== id) })
+        set({ items: get().items.filter((i) => i.id !== id) });
       },
 
-      // Изменить количество товара
+      // Mahsulotning miqdorini o'zgartirish
       updateQuantity: (id, quantity) => {
-        if (quantity < 1) return
+        if (quantity < 1) return;
         set({
           items: get().items.map((i) => (i.id === id ? { ...i, quantity } : i)),
-        })
+        });
       },
 
-      // Очистить корзину
+      // Savatni tozalash
       clearCart: () => set({ items: [] }),
 
-      // Вычисляемые значения
+      // Hisob qilingan qiymatlar
       get totalItems() {
-        return get().items.reduce((sum, i) => sum + i.quantity, 0)
+        return get().items.reduce((sum, i) => sum + i.quantity, 0);
       },
       get totalPrice() {
-        return get().items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+        return get().items.reduce((sum, i) => sum + i.price * i.quantity, 0);
       },
     }),
     {
-      name: 'cart-storage', // ключ в localStorage
-    }
-  )
-)
+      name: "cart-storage", // localStorage kalit
+    },
+  ),
+);
 
-export default useCartStore
+export default useCartStore;

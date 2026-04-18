@@ -2,108 +2,111 @@ import { Link } from "react-router-dom";
 import { Package, Clock, Truck, Shield } from "lucide-react";
 
 /**
- * ABOUT PAGE COMPONENT - Brand Story & Company Information
+ * HAQIDA SAHIFASI KOMPONENTI - Brend Hikoyasi & Kompaniya Ma'lumoti
  *
- * This page showcases the company's story, mission, and key features.
- * Layout (Desktop):
- *   - Breadcrumb navigation at top
- *   - Hero section with company story + image
- *   - Statistics section (Vendors, Customers, Products)
- *   - Feature cards showcasing key differentiators
+ * Bu sahifa kompaniyaning hikoyasi, missiyasi va asosiy xususiyatlarini ko'rsatadi.
+ * Layout (Veb):
+ *   - Yuqorida navigatsiya yo'li
+ *   - Qahramoni bo'lim kompaniya hikoyasi + rasm bilan
+ *   - Statistika bo'limi (Sotuvchi, Xaridor, Mahsulot)
+ *   - Asosiy farqlashtirgichlarni ko'rsatadigan xususiyat kartalari
  *
- * Layout (Mobile):
- *   - Stacked vertically: Story content, then image, then stats, then features
- *   - All typography and spacing scale down for readability
+ * Layout (Mobil):
+ *   - Vertikal yig'ish: Hikoya tarkibi, keyin rasm, keyin statistika, keyin xususiyatlar
+ *   - Barcha shrift va bo'sh joylar o'qish uchun kamayadi
  *
- * Color scheme:
- *   - Primary orange: #E44B26 for headings and CTAs
- *   - Gray text for body content
- *   - White background for clean aesthetic
+ * Rang sxemasi:
+ *   - Asosiy apelsin: #E44B26 sarlavhalar va CTA uchun
+ *   - Kulrang matn tanasi tarkibiga uchun
+ *   - Toza estetikaga uchun oq fon
  */
 
 export default function AboutPage() {
   // ═══════════════════════════════════════════════════════════════════════════════════
-  // FEATURE CARDS DATA
+  // XUSUSIYAT KARTALARI MA'LUMOTI
   // ═══════════════════════════════════════════════════════════════════════════════════
 
   /**
-   * Array of feature cards displayed at bottom of page.
-   * Each feature highlights a key differentiator of Foodzy.
-   * Icons are from lucide-react for consistency with rest of app.
+   * Sahifaning pastida ko'rsatilgan xususiyat kartalari massivi.
+   * Har bir xususiyat Foodzy'ning asosiy farqini ta'kidlaydi.
+   * Ikonkalar ilovaning boshqasiga mos kelish uchun lucide-react dan.
    */
   const features = [
     {
       id: 1,
       icon: Package,
-      title: "Product Packing",
-      description: "Secure and eco-friendly packaging for all your orders.",
+      title: "Mahsulot To'plash",
+      description:
+        "Barcha buyurtmalaringiz uchun xavfsiz va atrof-muhitga mos qadoqlash.",
     },
     {
       id: 2,
       icon: Clock,
-      title: "24x7 Support",
-      description: "Round-the-clock customer service for your convenience.",
+      title: "24x7 Qo'llab-Quvvatlash",
+      description:
+        "Sizning qulayligi uchun kunning hamma vaqtida xizmat ko'rsatish.",
     },
     {
       id: 3,
       icon: Truck,
-      title: "Delivery in 5 Days",
-      description: "Fast and reliable delivery across all regions.",
+      title: "5 Kundan Ichida Yetkazish",
+      description: "Barcha mintaqalar bo'ylab tez va ishonchli yetkazish.",
     },
     {
       id: 4,
       icon: Shield,
-      title: "Payment Secure",
-      description: "Safe and encrypted payment processing for peace of mind.",
+      title: "To'lov Xavfsiz",
+      description:
+        "Xotirjamlik uchun xavfsiz va shifrlangan to'lov qayta ishlash.",
     },
   ];
 
   // ═══════════════════════════════════════════════════════════════════════════════════
-  // STATISTICS DATA
+  // STATISTIKA MA'LUMOTI
   // ═══════════════════════════════════════════════════════════════════════════════════
 
   /**
-   * Company statistics displayed in the hero section.
-   * These showcase scale and trust: number of vendors, customers, and products.
-   * Formatted with 'k' suffix (thousands) for readability.
+   * Qahramoni bo'limida ko'rsatilgan kompaniya statistikasi.
+   * Bu miqyos va ishonchni ko'rsatadi: sotuvchi, xaridor va mahsulotlar soni.
+   * O'qish osonligi uchun 'k' suffiksi (minglab) bilan formatlangan.
    */
   const stats = [
-    { label: "Vendors", value: "0.1k" },
-    { label: "Customers", value: "23k" },
-    { label: "Products", value: "2k" },
+    { label: "Sotuvchi", value: "0.1k" },
+    { label: "Xaridor", value: "23k" },
+    { label: "Mahsulot", value: "2k" },
   ];
 
   // ═══════════════════════════════════════════════════════════════════════════════════
-  // RENDER - MAIN ABOUT PAGE
+  // RENDER - ASOSIY HAQIDA SAHIFASI
   // ═══════════════════════════════════════════════════════════════════════════════════
 
   return (
     <main className="bg-white">
-      {/* ─── BREADCRUMB NAVIGATION ─── */}
+      {/* ─── NAVIGATSIYA YO'LI ─── */}
       <div className="bg-[#E44B26] text-white px-4 py-3">
         <div className="max-w-[1200px] mx-auto flex items-center justify-between">
-          <h1 className="text-2xl md:text-3xl font-bold">About Us</h1>
+          <h1 className="text-2xl md:text-3xl font-bold">Biz Haqida</h1>
           <nav className="flex items-center gap-2 text-sm">
             <Link to="/" className="hover:opacity-80 transition-opacity">
-              Home
+              Bosh sahifa
             </Link>
             <span className="text-white/60">•</span>
-            <span className="text-white/80">About Us</span>
+            <span className="text-white/80">Biz Haqida</span>
           </nav>
         </div>
       </div>
 
-      {/* ─── HERO SECTION: Company Story + Image ─── */}
+      {/* ─── QAHRAMONI BO'LIM: Kompaniya Hikoyasi + Rasm ─── */}
       <section className="max-w-[1200px] mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Left: Story Content */}
+          {/* Chap: Hikoya Tarkibi */}
           <div className="space-y-4 md:space-y-6">
             {/* Section heading - large and prominent */}
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
               About The Carrot
             </h2>
 
-            {/* Company description - three paragraphs explaining mission and values */}
+            {/* Kompaniya ta'rifi - missiya va qiymatlarini tushuntiradigan uchta paragraf */}
             <div className="space-y-4 text-gray-600 text-sm md:text-base leading-relaxed">
               <p>
                 Lorem ipsum, dolor sit amet consectetur adipisicing elit.
@@ -126,16 +129,16 @@ export default function AboutPage() {
               </p>
             </div>
 
-            {/* ─── STATISTICS ROW ─── */}
-            {/* Three key metrics displayed in large format to show company scale */}
+            {/* ─── STATISTIKA QATORI ─── */}
+            {/* Kompaniya miqyosini ko'rsatish uchun katta formatda ko'rsatilgan uchta asosiy metrika */}
             <div className="grid grid-cols-3 gap-6 pt-4 md:pt-8">
               {stats.map((stat) => (
                 <div key={stat.label} className="text-center">
-                  {/* Large stat value in orange to draw attention */}
+                  {/* Diqqatni tortish uchun katta qiymat apelsinga */}
                   <div className="text-2xl md:text-3xl font-bold text-[#E44B26]">
                     {stat.value}
                   </div>
-                  {/* Stat label in gray */}
+                  {/* Statistika yorlig'i kulrang */}
                   <div className="text-xs md:text-sm text-gray-600 font-medium mt-1">
                     {stat.label}
                   </div>
@@ -144,14 +147,14 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Right: Feature Image */}
+          {/* O'ng: Xususiyat Rasmi */}
           <div className="flex justify-center lg:justify-end">
-            {/* Placeholder for vegetables/fresh produce image */}
+            {/* Sabzavot/yangi mahsulot rasmi uchun placeholder */}
             <div className="w-full max-w-sm bg-gradient-to-br from-green-50 to-orange-50 rounded-lg overflow-hidden shadow-lg">
-              {/* In a real app, this would be an actual image */}
+              {/* Haqiqiy ilovada bu haqiqiy rasm bo'ladi */}
               <div className="aspect-square bg-gradient-to-b from-green-100 to-yellow-100 flex items-center justify-center">
                 <p className="text-center text-gray-500 px-4">
-                  Fresh vegetables & grocery image
+                  Yangi sabzavotlar va bozorvoy rasm
                 </p>
               </div>
             </div>
@@ -159,19 +162,19 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ─── FEATURES SECTION ─── */}
+      {/* ─── XUSUSIYATLAR BO'LIMI ─── */}
       {/* 
-        Display key differentiators as feature cards.
-        Each card has icon, title, and description.
-        Desktop: 4 columns side-by-side
-        Mobile: 2 columns, then stacks at very small screens
+        Asosiy farqlarni xususiyat kartalari sifatida ko'rsatish.
+        Har bir karta ikonka, sarlavha va tavsifga ega.
+        Veb: 4 ustun yon-yana
+        Mobil: 2 ustun, keyin juda kichik ekranlarda yig'ish
       */}
       <section className="bg-gray-50 px-4 py-12 md:py-16">
         <div className="max-w-[1200px] mx-auto">
-          {/* Grid layout: responsive columns based on screen size */}
+          {/* To'r layout: ekran o'lchamiga asosida javob beruvchi ustunlar */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature) => {
-              // Dynamically get the icon component from lucide-react
+              // Lucide-react dan dinamik ravishda ikonka komponentini olish
               const IconComponent = feature.icon;
 
               return (
@@ -188,12 +191,12 @@ export default function AboutPage() {
                     />
                   </div>
 
-                  {/* Feature title - bold and prominent */}
+                  {/* Xususiyat sarlavhasi - qo'lin va naminon */}
                   <h3 className="text-lg font-bold text-gray-900 mb-2">
                     {feature.title}
                   </h3>
 
-                  {/* Feature description - smaller gray text */}
+                  {/* Xususiyat ta'rifi - kichikroq kulrang matn */}
                   <p className="text-sm text-gray-600 leading-relaxed">
                     {feature.description}
                   </p>
@@ -204,25 +207,25 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ─── CTA SECTION ─── */}
+      {/* ─── CTA BO'LIMI ─── */}
       {/* 
-        Call-to-action section encouraging users to explore products.
-        Simple section with button linking to shop.
+        Foydalanuvchilarni mahsulotlarni o'rganishga undaydigan havolani chiqarish bo'limi.
+        Oddiy bo'lim do'konga bog'lantirilgan tugma bilan.
       */}
       <section className="max-w-[1200px] mx-auto px-4 py-12 md:py-16 text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-          Ready to shop with us?
+          Biz bilan xarid qilishga tayormi?
         </h2>
         <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-          Explore our wide range of fresh and quality products delivered to your
-          doorstep.
+          Sizning eshikinggacha yetkazilgan keng ko'lamli yangi va sifatli
+          mahsulotlarni o'rganib chiqing.
         </p>
-        {/* Link button to shop page */}
+        {/* Do'kon sahifasiga havola tugmasi */}
         <Link
           to="/shop"
           className="inline-block bg-[#E44B26] hover:bg-[#c93f1e] text-white font-bold py-3 px-8 rounded-lg transition-colors"
         >
-          Start Shopping
+          Xarid Qilishni Boshlash
         </Link>
       </section>
     </main>

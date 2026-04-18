@@ -14,25 +14,25 @@ import useWishlistStore from "../../Store/wishlistStore";
 import logo from "../../assets/icons/logo.svg";
 
 /**
- * HEADER COMPONENT - Responsive Navigation & Branding
+ * HEADER KOMPONENT - Javob berish uchun tuzilgan Navigatsiya & Brending
  *
- * Desktop view (lg breakpoint+):
- *   - Top row: Navigation links + Phone contact
- *   - Bottom row: Logo + Search bar + Action icons (Account, Wishlist, Cart)
+ * Desktop ko'rinishi (lg breakpoint+):
+ *   - Yuqori qator: Navigatsiya havolalari + Telefon
+ *   - Pastki qator: Logotip + Qidirish paneli + Harakatlar ikonkalari (Account, Wishlist, Cart)
  *
- * Mobile view (below lg breakpoint):
- *   - Compact single row: Menu toggle + Logo + Action icons
- *   - Expandable nav drawer: Navigation links + Search (slides down when toggled)
+ * Mobil ko'rinishi (lg breakpoint ostida):
+ *   - Kompakt yagona qator: Menyu o'zgartgichi + Logotip + Harakatlar ikonkalari
+ *   - Oshib chiqadigan nav drawer: Navigatsiya havolalari + Qidirish (o'zgartgich bosilganda pastga suriladi)
  *
- * Features:
- *   - Sticky positioning (stays at top while scrolling)
- *   - Cart badge showing total items
+ * Xususiyatlar:
+ *   - Yapishqoq pozisyonlash (sahifaning yuqorisida qoladi harid qilayotganida)
+ *   - Savat badge summani ko'rsatadi
  *   - Wishlist counter badge
- *   - Search with category filter
- *   - Responsive design with Tailwind breakpoints
+ *   - Kategoriya filtriga havola bilan qidirish
+ *   - Tailwind breakpointlari bilan javob berish dizayni
  */
 
-// Array of main navigation links used in both desktop and mobile menus
+// Navigatsiya havolalarining asosiy massivi (desktop va mobil menyularda ishlatiladi)
 const NAV_LINKS = [
   { label: "Home", to: "/" },
   { label: "Shop", to: "/shop" },
@@ -43,27 +43,27 @@ const NAV_LINKS = [
 
 export default function Header() {
   // ═══════════════════════════════════════════════════════════════════════════════════
-  // STATE MANAGEMENT
+  // HOLATNI BOSHQARISH
   // ═══════════════════════════════════════════════════════════════════════════════════
 
-  // Track if mobile menu is open/closed
+  // Mobil menyun ochiq/yopiq ekanligini kuzatish
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Store the search query input value
+  // Qidirish sorovi input qiymatini saqlash
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Get router hooks for navigation and current page tracking
+  // Router hooks uchun navigatsiya va joriy sahifa kuzatish
   const navigate = useNavigate();
   const location = useLocation();
 
   // ═══════════════════════════════════════════════════════════════════════════════════
-  // ZUSTAND STORE HOOKS - Cart & Wishlist State Management
+  // ZUSTAND STORE HOOKS - Savat va Wishlist Holatini Boshqarish
   // ═══════════════════════════════════════════════════════════════════════════════════
 
   /**
-   * Subscribe to cart store to get cart items and calculate total quantity.
-   * This updates whenever items are added/removed from cart.
-   * The badge displays "9+" for 10+ items to save space.
+   * Savat storege obuna bo'ling va jami miqdor hisoblab oling.
+   * Bu savat o'zgarsa, qayta-render bo'ladi.
+   * Badge jami 10 yoki undan ortiq bo'lsa "9+" ko'rsatadi joyni tejash uchun.
    */
   const cartItems = useCartStore((s) => s.items);
   const totalCartItems = cartItems.reduce(
@@ -72,57 +72,57 @@ export default function Header() {
   );
 
   /**
-   * Subscribe to wishlist store to get total wishlist count.
-   * Shows how many items user has favorited.
+   * Wishlist storege obuna bo'ling jami wishlist soni uchun.
+   * Foydalanuvchi qancha mahsulotni sevimliga qo'shganini ko'rsatadi.
    */
   const wishlistTotal = useWishlistStore((s) => s.totalItems);
 
   // ═══════════════════════════════════════════════════════════════════════════════════
-  // EVENT HANDLERS
+  // VOQEA BOSHQARUVCHILARI
   // ═══════════════════════════════════════════════════════════════════════════════════
 
   /**
-   * Handle search form submission.
-   * Navigates to shop page with search query as URL parameter.
-   * Clears input after search and closes mobile menu if open.
-   * @param {Event} e - Form submit event
+   * Qidirish shakli yuborish uchun boshqaruvchi.
+   * Qidirish sorovi bilan shop sahifasiga yo'naltiriladi.
+   * Qidirish va mobil menyni yopgach inputni tozalaydi.
+   * @param {Event} e - Shakli yuborish voqeasi
    */
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // URL-encode the search query to handle special characters safely
+      // Maxsus belgini xavfsiz qilib olish uchun URL-kodlang
       navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery(""); // Clear input field
-      setMobileMenuOpen(false); // Close mobile menu after search
+      setSearchQuery(""); // Input maydoni tozalash
+      setMobileMenuOpen(false); // Qidirish keyin mobil menyu yopish
     }
   };
 
   /**
-   * Close mobile menu when navigation link is clicked.
-   * Ensures menu doesn't stay open after user navigates to a new page.
+   * Navigatsiya havolasi bosilganda mobil menyuni yopish.
+   * Foydalanuvchi yangi sahifaga o'tgandan keyin menyun ochiq qolmasligini ta'minlaydi.
    */
   const handleNavLinkClick = () => {
     setMobileMenuOpen(false);
   };
 
   /**
-   * Check if a link is the current active page.
-   * Used for visual highlighting of active navigation link.
-   * @param {string} to - The route path to check
-   * @returns {boolean} True if this route is currently active
+   * Havola joriy faol sahifa ekanligini tekshirish.
+   * Faol navigatsiya havolasini vizual ko'rsatish uchun ishlatiladi.
+   * @param {string} to - Tekshirilacak marshrutning yo'li
+   * @returns {boolean} Agar bu marshrut hozir faol bo'lsa True
    */
   const isActive = (to) => location.pathname === to;
 
   // ═══════════════════════════════════════════════════════════════════════════════════
-  // RENDER - MAIN HEADER COMPONENT
+  // RENDER - ASOSIY HEADER KOMPONENT
   // ═══════════════════════════════════════════════════════════════════════════════════
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
-      {/* ─── DESKTOP: TOP NAVIGATION ROW (hidden on mobile) ─── */}
+      {/* ─── DESKTOP: YUQORI NAVIGATSIYA QATORI (mobilda yashirinadi) ─── */}
       <div className="hidden lg:flex border-b border-gray-100">
         <div className="w-full max-w-[1200px] mx-auto px-4 flex items-center justify-between h-10">
-          {/* Desktop navigation links - flex layout with consistent spacing */}
+          {/* Desktop navigatsiya havolalari - tartibli joyni saqlash bilan flex layout */}
           <nav className="flex items-center gap-8">
             {NAV_LINKS.map((link) => (
               <Link
@@ -130,8 +130,8 @@ export default function Header() {
                 to={link.to}
                 className={`text-sm font-medium transition-colors ${
                   isActive(link.to)
-                    ? "text-[#E44B26]" // Active link color
-                    : "text-gray-600 hover:text-[#E44B26]" // Inactive link with hover effect
+                    ? "text-[#E44B26]" // Faol havola rangi
+                    : "text-gray-600 hover:text-[#E44B26]" // Faol bo'lmagan havola o'qish effekti bilan
                 }`}
               >
                 {link.label}
@@ -139,7 +139,7 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Phone contact info - right aligned */}
+          {/* Telefon kontakt ma'lumoti - o'ng tomoniga hizalangan */}
           <a
             href="tel:+1234567890"
             className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-[#E44B26] transition-colors"
@@ -150,28 +150,28 @@ export default function Header() {
         </div>
       </div>
 
-      {/* ─── MAIN HEADER ROW (Desktop: Logo + Search + Icons) ─── */}
+      {/* ─── ASOSIY HEADER QATORI (Desktop: Logotip + Qidirish + Ikonkalar) ─── */}
       <div className="w-full max-w-[1200px] mx-auto px-4 flex items-center justify-between gap-3 h-16 lg:gap-4">
-        {/* ──── MOBILE MENU TOGGLE (visible only on small screens) ──── */}
+        {/* ──── MOBIL MENYU SHIFT-ALMASHTIR (kichik ekranda ko'rinadi) ──── */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="lg:hidden flex-shrink-0 text-gray-600 hover:text-[#E44B26] transition-colors"
-          aria-label="Toggle menu"
+          aria-label="Menyuni shift-almashtirgich"
           aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        {/* ──── LOGO (all screen sizes) ──── */}
+        {/* ──── LOGOTIP (barcha ekran o'lchami) ──── */}
         <Link
           to="/"
           className="flex-shrink-0 flex items-center hover:opacity-80 transition-opacity"
-          aria-label="Foodzy Home"
+          aria-label="Foodzy Asosiy sahifa"
         >
-          <img src={logo} alt="Foodzy Logo" className="h-8 w-auto" />
+          <img src={logo} alt="Foodzy Logotipi" className="h-8 w-auto" />
         </Link>
 
-        {/* ──── SEARCH BAR (hidden on mobile due to space constraints) ──── */}
+        {/* ──── QIDIRISH PANELI (mobilda joyni tejash uchun yashirinadi) ──── */}
         <form
           onSubmit={handleSearch}
           className="hidden md:flex flex-1 max-w-md items-center border border-gray-200 rounded-lg overflow-hidden hover:border-[#E44B26] transition-colors"
@@ -180,30 +180,30 @@ export default function Header() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search for items..."
+            placeholder="Mahsulot izlang..."
             className="flex-1 px-4 py-2.5 text-sm focus:outline-none bg-transparent"
           />
           <button
             type="submit"
             className="bg-[#E44B26] hover:bg-[#c93f1e] text-white px-3.5 py-2.5 transition-colors flex items-center justify-center"
-            aria-label="Search"
+            aria-label="Qidirish"
           >
             <Search size={16} />
           </button>
         </form>
 
-        {/* ──── ACTION ICONS ROW (Account, Wishlist, Cart) ──── */}
+        {/* ──── HARAKATLAR IKONKALARI QATORI (Hisob, Wishlist, Savat) ──── */}
         <div className="flex items-center gap-2 md:gap-4 ml-auto flex-shrink-0">
-          {/* Account / Login Button */}
+          {/* Hisob / Kirish Tugmasi */}
           <button className="flex items-center gap-1 text-gray-600 hover:text-[#E44B26] transition-colors text-xs md:text-sm font-medium group">
             <User
               size={18}
               className="group-hover:scale-110 transition-transform"
             />
-            <span className="hidden md:inline">Account</span>
+            <span className="hidden md:inline">Hisob</span>
           </button>
 
-          {/* Wishlist Button - shows badge with count of favorited items */}
+          {/* Wishlist Tugmasi - sevimli mahsulotlar soni badge ko'rsatadi */}
           <Link
             to="/wishlist"
             className="flex items-center gap-1 text-gray-600 hover:text-[#E44B26] transition-colors text-xs md:text-sm font-medium relative group"
@@ -213,7 +213,7 @@ export default function Header() {
                 size={18}
                 className="group-hover:scale-110 transition-transform"
               />
-              {/* Badge showing wishlist item count */}
+              {/* Wishlist mahsulotlar soni badge */}
               {wishlistTotal > 0 && (
                 <span className="absolute -top-2 -right-2 bg-[#E44B26] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
                   {wishlistTotal > 9 ? "9+" : wishlistTotal}
@@ -223,7 +223,7 @@ export default function Header() {
             <span className="hidden md:inline">Wishlist</span>
           </Link>
 
-          {/* Shopping Cart Button - main CTA with item count badge */}
+          {/* Savat Tugmasi - asosiy CTA mahsulotlar soni badge bilan */}
           <Link
             to="/cart"
             className="flex items-center gap-1 text-gray-600 hover:text-[#E44B26] transition-colors text-xs md:text-sm font-medium relative group"
@@ -233,22 +233,22 @@ export default function Header() {
                 size={18}
                 className="group-hover:scale-110 transition-transform"
               />
-              {/* Badge showing total cart items (counts quantity, not just products) */}
+              {/* Jami savat mahsulotlar soni badge (faqat miqdor hisoblanadi, mahsulotlar emas) */}
               {totalCartItems > 0 && (
                 <span className="absolute -top-2 -right-2 bg-[#E44B26] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
                   {totalCartItems > 9 ? "9+" : totalCartItems}
                 </span>
               )}
             </div>
-            <span className="hidden md:inline">Cart</span>
+            <span className="hidden md:inline">Savat</span>
           </Link>
         </div>
       </div>
 
-      {/* ─── MOBILE MENU DRAWER (slides down when menu toggle clicked) ─── */}
+      {/* ─── MOBIL MENYU DRAWER (menyu o'zgartirgich bosilganda pastga suriladi) ─── */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-gray-100 bg-gray-50 px-4 py-4 animate-in fade-in slide-in-from-top-2 duration-200">
-          {/* Mobile search bar - shown in menu drawer */}
+          {/* Mobil qidirish paneli - menyu drawerda ko'rsatiladi */}
           <form
             onSubmit={handleSearch}
             className="mb-4 flex items-center border border-gray-200 rounded-lg overflow-hidden bg-white"
@@ -257,19 +257,19 @@ export default function Header() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search..."
+              placeholder="Izlang..."
               className="flex-1 px-3 py-2 text-sm focus:outline-none"
             />
             <button
               type="submit"
               className="bg-[#E44B26] hover:bg-[#c93f1e] text-white px-3 py-2 transition-colors"
-              aria-label="Search"
+              aria-label="Qidirish"
             >
               <Search size={16} />
             </button>
           </form>
 
-          {/* Navigation links in mobile menu */}
+          {/* Mobil menyudagi navigatsiya havolalari */}
           <nav className="flex flex-col gap-1">
             {NAV_LINKS.map((link) => (
               <Link
@@ -278,8 +278,8 @@ export default function Header() {
                 onClick={handleNavLinkClick}
                 className={`px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                   isActive(link.to)
-                    ? "bg-[#E44B26] text-white" // Active link background
-                    : "text-gray-700 hover:bg-gray-100" // Inactive link with hover background
+                    ? "bg-[#E44B26] text-white" // Faol havola foni
+                    : "text-gray-700 hover:bg-gray-100" // Faol bo'lmagan havola o'qish foni bilan
                 }`}
               >
                 {link.label}

@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Heart } from "lucide-react";
 import useCartStore from "../../Store/cartStore";
+import useWishlistStore from "../../Store/wishlistStore";
 
 /**
- * Карточка товара — стиль по макету:
- * - серый фон изображения с закруглёнными углами
- * - иконка корзины по центру снизу (на белом кружке)
- * - категория серым, звёзды, название, цена красная + зачёркнутая
+ * Mahsulot kartasi — maketi bo'yicha uslub:
+ * - rasmi uchun kulrang fon yumaloq burchaklar bilan
+ * - savat ikonkasi markazda pastda (oq doiraga)
+ * - kategoriya kulrang, yulduzlar, nomi, qizil narxi + o'chirilgan
+ * - yuragi o'ng tepada wishlistga qo'shish uchun
  */
 export default function ProductCard({ product, variant = "default" }) {
   const addItem = useCartStore((s) => s.addItem);
+  const isInWishlist = useWishlistStore((s) => s.isInWishlist(product?.id));
+  const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
 
   if (!product) return null;
 
@@ -35,7 +39,18 @@ export default function ProductCard({ product, variant = "default" }) {
     addItem(product);
   }
 
-  // Бейдж
+  /**
+   * Wishlist tugmasi bosilish uchun boshqaruvchi.
+   * Mahsulotni wishlistda qo'shadi/o'chiradi.
+   * @param {Event} e - Event object'i
+   */
+  function handleToggleWishlist(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product);
+  }
+
+  // Badge (nishoncha)
   function getBadge() {
     if (is_new) return { label: "New", bg: "bg-[#3BB77E]" };
     if (is_sale) return { label: "Sale", bg: "bg-[#4096EE]" };
@@ -44,12 +59,12 @@ export default function ProductCard({ product, variant = "default" }) {
   }
   const badge = getBadge();
 
-  // Скидка %
+  // Chegirma %
   const discountPct = old_price
     ? Math.round(((old_price - price) / old_price) * 100)
     : null;
 
-  // ── Компактный вид для TopLists ──
+  // ── TopLists uchun kompakt ko'rinishi ──
   if (variant === "compact") {
     return (
       <Link to={`/product/${id}`} className="flex items-center gap-3 group">
@@ -82,7 +97,7 @@ export default function ProductCard({ product, variant = "default" }) {
     );
   }
 
-  // ── Стандартный вид ──
+  // ── Standart ko'rinishi ──
   return (
     <Link
       to={`/product/${id}`}
@@ -90,7 +105,7 @@ export default function ProductCard({ product, variant = "default" }) {
                  hover:shadow-lg transition-all duration-300 flex flex-col
                  overflow-visible relative"
     >
-      {/* Бейдж сверху слева */}
+      {/* Badge tepada chap tomonida */}
       {badge && (
         <div className="absolute top-3 left-3 z-10">
           <span
@@ -101,7 +116,7 @@ export default function ProductCard({ product, variant = "default" }) {
         </div>
       )}
 
-      {/* Скидка сверху справа */}
+      {/* Chegirma tepada o'ng tomonida */}
       {discountPct && (
         <div className="absolute top-3 right-3 z-10">
           <span className="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
@@ -110,10 +125,29 @@ export default function ProductCard({ product, variant = "default" }) {
         </div>
       )}
 
-      {/* ── Блок изображения ── */}
-      {/* Относительный контейнер чтобы кнопка корзины вышла снизу по центру */}
+      {/* Wishlist tugmasi tepada o'ng tomonida (chegirmasi yo'q bo'lsa yoki yonida) */}
+      <button
+        onClick={handleToggleWishlist}
+        className={`absolute top-3 z-20 w-8 h-8 rounded-full flex items-center justify-center
+                     transition-all duration-200 shadow-sm
+                     ${
+                       isInWishlist
+                         ? "bg-red-600 text-white"
+                         : "bg-white text-gray-400 hover:bg-red-50 hover:text-red-600 border border-gray-200"
+                     }
+                     ${discountPct ? "right-16" : "right-3"}`}
+        aria-label={
+          isInWishlist ? "Wishlistdan o'chirish" : "Wishlistga qo'shish"
+        }
+        title={isInWishlist ? "Wishlistda" : "Wishlistga qo'shish"}
+      >
+        <Heart size={16} className={isInWishlist ? "fill-current" : ""} />
+      </button>
+
+      {/* ── Rasm bloki ── */}
+      {/* Savat tugmasi pastda markazga chiqishi uchun nisbiy konteyner */}
       <div className="relative mx-3 mt-3">
-        {/* Серый фон с картинкой */}
+        {/* Rasmi bilan kulrang fon */}
         <div className="bg-[#F3F4F6] rounded-xl h-44 flex items-center justify-center overflow-hidden p-4">
           <img
             src={image_url}
@@ -124,7 +158,7 @@ export default function ProductCard({ product, variant = "default" }) {
           />
         </div>
 
-        {/* Кнопка корзины — выступает снизу по центру */}
+        {/* Savat tugmasi — pastda markazga chiqadi */}
         <button
           onClick={handleAddToCart}
           className="absolute -bottom-4 left-1/2 -translate-x-1/2
@@ -132,25 +166,25 @@ export default function ProductCard({ product, variant = "default" }) {
                      flex items-center justify-center
                      hover:bg-[#E44B26] hover:border-[#E44B26] hover:text-white
                      text-gray-400 transition-all duration-200 z-10"
-          aria-label={`Добавить ${name} в корзину`}
+          aria-label={`${name} savat qo'shish`}
         >
           <ShoppingCart size={15} />
         </button>
       </div>
 
-      {/* ── Информация ── */}
+      {/* ── Ma'lumot ── */}
       <div className="px-3 pt-7 pb-4 flex flex-col flex-1 text-center">
-        {/* Категория */}
+        {/* Kategoriya */}
         {categoryName && (
           <p className="text-xs text-gray-400 mb-1">{categoryName}</p>
         )}
 
-        {/* Звёзды */}
+        {/* Yulduzlar */}
         <div className="flex items-center justify-center gap-1 mb-1">
           <StarRow rating={rating} count={review_count} />
         </div>
 
-        {/* Название */}
+        {/* Nomi */}
         <p
           className="text-sm font-semibold text-gray-800 line-clamp-2 mb-2
                       group-hover:text-[#E44B26] transition-colors leading-snug flex-1"
@@ -158,7 +192,7 @@ export default function ProductCard({ product, variant = "default" }) {
           {name}
         </p>
 
-        {/* Цена */}
+        {/* Narxi */}
         <div className="flex items-center justify-center gap-2">
           <span className="text-[#E44B26] font-bold text-base">${price}</span>
           {old_price && (
@@ -172,7 +206,7 @@ export default function ProductCard({ product, variant = "default" }) {
   );
 }
 
-// Звёзды
+// Yulduzlar
 function StarRow({ rating = 0, count }) {
   return (
     <div className="flex items-center gap-1">

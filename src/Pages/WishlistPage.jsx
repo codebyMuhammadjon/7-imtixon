@@ -4,74 +4,74 @@ import useWishlistStore from "../Store/wishlistStore";
 import useCartStore from "../Store/cartStore";
 
 /**
- * WISHLIST PAGE COMPONENT - Favorite Products Display & Management
+ * WISHLIST SAHIFASI KOMPONENTI - Sevimli Mahsulotlar Ko'rsatish & Boshqarish
  *
- * This page displays all products that users have added to their wishlist/favorites.
- * Features:
- *   - Grid or list view of all wishlist items
- *   - Remove from wishlist functionality
- *   - Quick add-to-cart for any item
- *   - Empty state with call-to-action when no items
- *   - Product price, images, and ratings
+ * Bu sahifa foydalanuvchilar wishlist/sevimlisiga qo'shgan barcha mahsulotlarni ko'rsatadi.
+ * Xususiyatlar:
+ *   - Barcha wishlist mahsulotlarining to'r yoki ro'yxat ko'rinishi
+ *   - Wishlistdan o'chirish funksionalligini
+ *   - Har qanday mahsulot uchun tez savat qo'shish
+ *   - Mahsulot bo'lmaganda bo'sh holat havolani chiqarish
+ *   - Mahsulot narxi, rasmlari va baholari
  *
  * Layout:
- *   Desktop: 4-column grid of product cards
- *   Tablet: 3-column grid
- *   Mobile: 2-column grid for optimal space usage
+ *   Veb: 4 ustunli mahsulot kartalari to'ri
+ *   Planshet: 3 ustunli to'r
+ *   Mobil: Optimal joydan foydalanish uchun 2 ustunli to'r
  *
- * State Management:
- *   - Uses useWishlistStore to fetch wishlist items from Zustand
- *   - Uses useCartStore to add items to cart
+ * Holatni Boshqarish:
+ *   - Zustand dan wishlist mahsulotlarini olish uchun useWishlistStore ishlatiladi
+ *   - Savat qo'shish uchun useCartStore ishlatiladi
  */
 
 export default function WishlistPage() {
   // ═══════════════════════════════════════════════════════════════════════════════════
-  // STATE MANAGEMENT FROM ZUSTAND STORES
+  // ZUSTAND STORE'LARDAN HOLATNI BOSHQARISH
   // ═══════════════════════════════════════════════════════════════════════════════════
 
   /**
-   * Get all wishlist items from Zustand store.
-   * Subscribes to store so component re-renders when wishlist changes.
-   * Items array contains full product objects: { id, name, price, image_url, ... }
+   * Zustand store'dan barcha wishlist mahsulotlarini olish.
+   * Wishlist o'zgarganida komponent qayta renderleninadigan qilib store'ga ajratiladi.
+   * Mahsulotlar massivi to'liq mahsulot ob'ektlarini o'z ichiga oladi: { id, name, price, image_url, ... }
    */
   const wishlistItems = useWishlistStore((s) => s.items);
 
   /**
-   * Get the removeItem function from wishlist store.
-   * Used to remove a product from wishlist when user clicks remove button.
+   * Wishlist store'dan removeItem funksiyasini olish.
+   * Foydalanuvchi o'chirish tugmasini bosganda mahsulotni wishlistdan o'chirish uchun ishlatiladi.
    */
   const removeFromWishlist = useWishlistStore((s) => s.removeItem);
 
   /**
-   * Get the toggleWishlist function from wishlist store.
-   * Used to provide alternative way to remove items (toggle functionality).
+   * Wishlist store'dan toggleWishlist funksiyasini olish.
+   * Mahsulotlarni o'chirish uchun alternativ usulni taqdim etish uchun ishlatiladi (shift-almashtirgich funksionalligini).
    */
   const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
 
   /**
-   * Get the addItem function from cart store.
-   * Used to add wishlist items to shopping cart with one click.
+   * Savat store'dan addItem funksiyasini olish.
+   * Wishlist mahsulotlarini bitta bosilgan bilan savat qo'shish uchun ishlatiladi.
    */
   const addToCart = useCartStore((s) => s.addItem);
 
   // ═══════════════════════════════════════════════════════════════════════════════════
-  // EVENT HANDLERS
+  // VOQEA BOSHQARUVCHILARI
   // ═══════════════════════════════════════════════════════════════════════════════════
 
   /**
-   * Handle removing a single product from the wishlist.
-   * Shows visual feedback by removing it from the grid immediately.
-   * @param {number|string} productId - ID of the product to remove
+   * Bitta mahsulotni wishlistdan o'chirish boshqaruvchisi.
+   * To'rdan uni darhol olib tashlash orqali vizual qayta-javob beradi.
+   * @param {number|string} productId - O'chirilishi kerak bo'lgan mahsulotning ID'si
    */
   const handleRemoveFromWishlist = (productId) => {
     removeFromWishlist(productId);
-    // Optional: Could add a toast notification here for UX feedback
+    // Ixtiyoriy: Bu yerga UX qayta-javob uchun toast bildirish qo'shish mumkin edi
   };
 
   /**
-   * Handle adding a wishlist product to the shopping cart.
-   * This creates a new cart item with quantity of 1.
-   * @param {Object} product - Full product object to add to cart
+   * Wishlist mahsulotini savat qo'shish boshqaruvchisi.
+   * Bu miqdori 1 bo'lgan yangi savat mahsuloti yaratadi.
+   * @param {Object} product - Savat qo'shish uchun to'liq mahsulot ob'ekti
    */
   const handleAddToCart = (product) => {
     addToCart({
@@ -80,16 +80,16 @@ export default function WishlistPage() {
       price: product.price,
       image_url: product.image_url,
     });
-    // Optional: Could show a toast notification confirming item added to cart
+    // Ixtiyoriy: Savat qo'shilganligini tasdiqlovchi toast bildirish ko'rsatishi mumkin
   };
 
   /**
-   * Handle clearing entire wishlist at once.
-   * Shows confirmation dialog to prevent accidental data loss.
+   * Butun wishlistni bir vaqtda o'chirish boshqaruvchisi.
+   * Tasodifiy ma'lumotlar yo'qotilishini oldini olish uchun tasdiqlov dialogi ko'rsatadi.
    */
   const handleClearWishlist = () => {
     const confirmed = window.confirm(
-      "Are you sure you want to clear your entire wishlist? This action cannot be undone.",
+      "Siz butun wishlistni o'chirib tashlamoqchi ekaningizga ishonchli ekanmisiz? Bu harakatni qaytarish mumkin emas.",
     );
     if (confirmed) {
       useWishlistStore.setState({ items: [] });
@@ -97,18 +97,18 @@ export default function WishlistPage() {
   };
 
   // ═══════════════════════════════════════════════════════════════════════════════════
-  // RENDER - MAIN WISHLIST PAGE
+  // RENDER - ASOSIY WISHLIST SAHIFASI
   // ═══════════════════════════════════════════════════════════════════════════════════
 
   return (
     <main className="bg-white min-h-screen">
-      {/* ─── BREADCRUMB & HEADER ─── */}
+      {/* ─── NAVIGATSIYA YO'LI & SARLAVHA ─── */}
       <div className="bg-[#E44B26] text-white px-4 py-3">
         <div className="max-w-[1200px] mx-auto flex items-center justify-between">
-          <h1 className="text-2xl md:text-3xl font-bold">My Wishlist</h1>
+          <h1 className="text-2xl md:text-3xl font-bold">Mening Wishlistim</h1>
           <nav className="flex items-center gap-2 text-sm">
             <Link to="/" className="hover:opacity-80 transition-opacity">
-              Home
+              Bosh sahifa
             </Link>
             <span className="text-white/60">•</span>
             <span className="text-white/80">Wishlist</span>
@@ -116,69 +116,70 @@ export default function WishlistPage() {
         </div>
       </div>
 
-      {/* ─── MAIN CONTENT ─── */}
+      {/* ─── ASOSIY TARKIB ─── */}
       <div className="max-w-[1200px] mx-auto px-4 py-8">
-        {/* ──── WISHLIST ITEMS COUNT & ACTIONS ──── */}
+        {/* ──── WISHLIST MAHSULOTLAR SONI & AMALLAR ──── */}
         <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
           <div>
             <h2 className="text-lg md:text-xl font-bold text-gray-900">
               {wishlistItems.length === 0
-                ? "No items in your wishlist"
-                : `${wishlistItems.length} item${wishlistItems.length !== 1 ? "s" : ""} in your wishlist`}
+                ? "Wishlistda mahsulot yo'q"
+                : `Wishlistda ${wishlistItems.length} ta${wishlistItems.length !== 1 ? "" : ""} mahsulot`}
             </h2>
             <p className="text-sm text-gray-500 mt-1">
               {wishlistItems.length > 0
-                ? "Add any of these items to your cart or remove them from your wishlist."
-                : "Start adding your favorite products to your wishlist!"}
+                ? "Ushbu mahsulotlardan istalganini savat qo'shish yoki wishlistdan o'chirish mumkin."
+                : "Sevimli mahsulotlaringizni wishlistga qo'sha boshlangu!"}
             </p>
           </div>
 
-          {/* Clear all wishlist button - only show if items exist */}
+          {/* Barcha wishlistni o'chirish tugmasi - faqat mahsulot mavjud bo'lsa ko'rsatish */}
           {wishlistItems.length > 0 && (
             <button
               onClick={handleClearWishlist}
               className="hidden md:block px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-              title="Clear entire wishlist"
+              title="Butun wishlistni o'chirish"
             >
-              Clear All
+              Hammasini O'chirish
             </button>
           )}
         </div>
 
-        {/* ──── EMPTY STATE ──── */}
+        {/* ──── BO'SH HOLAT ──── */}
         {wishlistItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 md:py-20">
-            {/* Heart icon for visual feedback */}
+            {/* Vizual qa'ytaga uchun yurak ikonkasi */}
             <Heart size={64} className="text-gray-300 mb-4 stroke-1" />
 
-            {/* Empty state message */}
+            {/* Bo'sh holat xabari */}
             <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
-              Your wishlist is empty
+              Wishlistingiz bo'sh
             </h3>
             <p className="text-gray-600 text-center max-w-sm mb-6">
-              Start adding products to your wishlist and they'll appear here.
+              Mahsulotlarni wishlistga qo'sha boshlangu va ular bu yerda
+              ko'rinadi.
             </p>
 
-            {/* CTA button to shop */}
+            {/* CTA tugmasi do'konga */}
             <Link
               to="/shop"
               className="inline-flex items-center gap-2 bg-[#E44B26] hover:bg-[#c93f1e] text-white font-bold py-3 px-6 rounded-lg transition-colors"
             >
-              Continue Shopping
+              Xarid Qilishni Davom Ettirish
               <ArrowRight size={18} />
             </Link>
           </div>
         ) : (
-          /* ──── WISHLIST ITEMS GRID ──── */
+          /* ──── WISHLIST MAHSULOTLAR TO'RI ──── */
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {wishlistItems.map((product) => (
               <div
                 key={product.id}
                 className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col"
               >
-                {/* ──── PRODUCT IMAGE CONTAINER ──── */}
+                {/* ──── MAHSULOT RASMI KONTEYNER ──── */}
                 <div className="relative bg-gray-100 aspect-square overflow-hidden group">
-                  {/* Product image */}
+                  {/* Mahsulot rasmi */}
                   {product.image_url ? (
                     <img
                       src={product.image_url}
@@ -186,31 +187,31 @@ export default function WishlistPage() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
-                    /* Placeholder if no image */
+                    /* Rasm bo'lmasa placeholder */
                     <div className="w-full h-full flex items-center justify-center text-gray-400">
-                      No image
+                      Rasm yo'q
                     </div>
                   )}
 
-                  {/* ──── REMOVE FROM WISHLIST BUTTON ──── */}
+                  {/* ──── WISHLISTDAN O'CHIRISH TUGMASI ──── */}
                   {/* 
-                    Positioned absolutely in top-right corner.
-                    Shows red background on hover for clear call-to-action.
-                    Heart icon filled to indicate item is in wishlist.
+                    Mutlaq o'ng yuqori burchagiga joylashtirilgan.
+                    Amal-harakatning aniq chaqiruvini uchun suring ortida ko'rinadi.
+                    Mahsulot wishlistda ekanligini ko'rsatadigan to'liq yurak ikonkasi.
                   */}
                   <button
                     onClick={() => handleRemoveFromWishlist(product.id)}
                     className="absolute top-2 right-2 bg-white/90 hover:bg-red-600 text-gray-600 hover:text-white p-2 rounded-full transition-colors shadow-md"
-                    title="Remove from wishlist"
-                    aria-label="Remove from wishlist"
+                    title="Wishlistdan o'chirish"
+                    aria-label="Wishlistdan o'chirish"
                   >
                     <Heart size={18} className="fill-current" />
                   </button>
                 </div>
 
-                {/* ──── PRODUCT INFO SECTION ──── */}
+                {/* ──── MAHSULOT MA'LUMOT BO'LIMI ──── */}
                 <div className="flex-1 p-3 md:p-4 flex flex-col">
-                  {/* Product name - truncate to 2 lines */}
+                  {/* Mahsulot nomi - 2 qatoriga kesish */}
                   <h3 className="font-bold text-sm md:text-base text-gray-900 line-clamp-2 mb-2">
                     <Link
                       to={`/product/${product.id}`}
@@ -220,7 +221,7 @@ export default function WishlistPage() {
                     </Link>
                   </h3>
 
-                  {/* Optional: Product category badge */}
+                  {/* Ixtiyoriy: Mahsulot kategoriyasi badge */}
                   {product.category && (
                     <span className="text-xs text-gray-500 mb-2 capitalize">
                       {typeof product.category === "string"
@@ -229,29 +230,29 @@ export default function WishlistPage() {
                     </span>
                   )}
 
-                  {/* Product price - prominent in orange */}
+                  {/* Mahsulot narxi - apertadasida noto'qiblangan */}
                   <div className="text-lg md:text-xl font-bold text-[#E44B26] mb-3 mt-auto">
                     ${product.price?.toFixed(2) || "N/A"}
                   </div>
 
-                  {/* ──── ACTION BUTTONS ──── */}
+                  {/* ──── AMALIYOT TUGMALARI ──── */}
                   <div className="flex gap-2">
-                    {/* Add to Cart Button */}
+                    {/* Savat qo'shish tugmasi */}
                     <button
                       onClick={() => handleAddToCart(product)}
                       className="flex-1 bg-[#E44B26] hover:bg-[#c93f1e] text-white font-bold py-2 px-3 rounded-lg transition-colors flex items-center justify-center gap-1 text-sm"
-                      title="Add to cart"
+                      title="Savat qo'shish"
                     >
                       <ShoppingCart size={16} />
-                      <span className="hidden md:inline">Add</span>
+                      <span className="hidden md:inline">Qo'shish</span>
                     </button>
 
-                    {/* Remove Button - mobile optimized */}
+                    {/* O'chirish tugmasi - mobil optimallashtirilgan */}
                     <button
                       onClick={() => handleRemoveFromWishlist(product.id)}
                       className="flex-shrink-0 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white font-bold py-2 px-3 rounded-lg transition-colors flex items-center justify-center"
-                      title="Remove from wishlist"
-                      aria-label="Remove from wishlist"
+                      title="Wishlistdan o'chirish"
+                      aria-label="Wishlistdan o'chirish"
                     >
                       <Trash2 size={16} />
                     </button>
@@ -262,18 +263,18 @@ export default function WishlistPage() {
           </div>
         )}
 
-        {/* ──── RECOMMENDATIONS SECTION ──── */}
-        {/* Only show if wishlist is not empty - encourages more shopping */}
+        {/* ──── TAVSIYA QISMI ──── */}
+        {/* Wishlist bo'sh bo'lmasa ko'rsatish - ko'proq xarid qilishga undaydi */}
         {wishlistItems.length > 0 && (
           <div className="mt-12 md:mt-16 py-8 border-t border-gray-200 text-center">
             <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
-              Want to explore more products?
+              Ko'proq mahsulotlarni ko'rmoqchimisiz?
             </h3>
             <Link
               to="/shop"
               className="inline-flex items-center gap-2 bg-[#E44B26] hover:bg-[#c93f1e] text-white font-bold py-3 px-6 rounded-lg transition-colors"
             >
-              Continue Shopping
+              Xarid Qilishni Davom Ettirish
               <ArrowRight size={18} />
             </Link>
           </div>

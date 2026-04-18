@@ -12,14 +12,17 @@ import { fetchProductById, fetchPopularProducts } from "../Api/products";
 import ProductCard from "../Components/Ui/ProductCard";
 import Breadcrumb from "../Components/Ui/Breadcrumb";
 import useCartStore from "../Store/cartStore";
+import useWishlistStore from "../Store/wishlistStore";
 
-const TABS = ["Description", "Information", "Review"];
+const TABS = ["Ta'rifi", "Ma'lumot", "Sharh"];
 
 export default function ProductDetail() {
   const { id } = useParams();
   const addItem = useCartStore((s) => s.addItem);
+  const isInWishlist = useWishlistStore((s) => s.isInWishlist(id));
+  const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
 
-  const [activeTab, setActiveTab] = useState("Description");
+  const [activeTab, setActiveTab] = useState("Ta'rifi");
   const [quantity, setQuantity] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
 
@@ -38,9 +41,9 @@ export default function ProductDetail() {
   if (!product)
     return (
       <div className="text-center py-24">
-        <p className="text-gray-400 text-lg mb-4">Product not found.</p>
+        <p className="text-gray-400 text-lg mb-4">Mahsulot topilmadi.</p>
         <Link to="/shop" className="text-[#E44B26] hover:underline">
-          ← Back to Shop
+          ← Do'konga qaytish
         </Link>
       </div>
     );
@@ -69,7 +72,7 @@ export default function ProductDetail() {
     ? Math.round(((old_price - price) / old_price) * 100)
     : null;
 
-  // Несколько фото (у нас одно — дублируем для демонстрации)
+  // Bir nechta rasm (bizda bir tasi — namoyish uchun dublikatlangan)
   const images = [image_url, image_url, image_url, image_url].filter(Boolean);
 
   function handleAdd() {
@@ -78,15 +81,15 @@ export default function ProductDetail() {
 
   return (
     <div>
-      {/* Заголовок */}
+      {/* Sarlavha */}
       <div className="bg-[#E44B26] py-5">
         <div className="max-w-[1200px] mx-auto px-4 flex items-center justify-between">
-          <h1 className="text-white font-bold text-xl">Product</h1>
+          <h1 className="text-white font-bold text-xl">Mahsulot</h1>
           <Breadcrumb
             items={[
-              { label: "Home", to: "/" },
-              { label: "Shop", to: "/shop" },
-              { label: "Product" },
+              { label: "Bosh sahifa", to: "/" },
+              { label: "Do'kon", to: "/shop" },
+              { label: "Mahsulot" },
             ]}
           />
         </div>
@@ -94,9 +97,9 @@ export default function ProductDetail() {
 
       <div className="max-w-[1200px] mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-10">
-          {/* ── Галерея ── */}
+          {/* ── Galeriya ── */}
           <div className="lg:w-[340px] flex-shrink-0">
-            {/* Главное фото */}
+            {/* Asosiy rasm */}
             <div className="bg-gray-50 rounded-xl overflow-hidden flex items-center justify-center h-72 mb-3">
               <img
                 src={images[activeImg]}
@@ -104,7 +107,7 @@ export default function ProductDetail() {
                 className="max-h-full max-w-full object-contain p-4"
               />
             </div>
-            {/* Миниатюры */}
+            {/* Kichik rasmlar */}
             <div className="flex gap-2">
               {images.map((img, idx) => (
                 <button
@@ -123,11 +126,11 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* ── Информация ── */}
+          {/* ── Ma'lumot ── */}
           <div className="flex-1">
             <h1 className="text-xl font-bold text-gray-900 mb-2">{name}</h1>
 
-            {/* Рейтинг */}
+            {/* Baholash */}
             <div className="flex items-center gap-2 mb-3">
               <div className="flex gap-0.5">
                 {[1, 2, 3, 4, 5].map((s) => (
@@ -140,16 +143,16 @@ export default function ProductDetail() {
                 ))}
               </div>
               <span className="text-gray-500 text-sm">
-                ({review_count} Review)
+                ({review_count} Sharh)
               </span>
             </div>
 
-            {/* Характеристики */}
+            {/* Xarakteristikalar */}
             <div className="text-sm space-y-1.5 mb-4 text-gray-600">
               {brand && (
                 <p>
                   <span className="font-medium text-gray-800 w-24 inline-block">
-                    Brand
+                    Brend
                   </span>
                   : {brand}
                 </p>
@@ -157,7 +160,7 @@ export default function ProductDetail() {
               {flavour && (
                 <p>
                   <span className="font-medium text-gray-800 w-24 inline-block">
-                    Flavour
+                    Ta'mi
                   </span>
                   : {flavour}
                 </p>
@@ -165,7 +168,7 @@ export default function ProductDetail() {
               {diet_type && (
                 <p>
                   <span className="font-medium text-gray-800 w-24 inline-block">
-                    Diet Type
+                    Diet Turi
                   </span>
                   : {diet_type}
                 </p>
@@ -173,7 +176,7 @@ export default function ProductDetail() {
               {weight && (
                 <p>
                   <span className="font-medium text-gray-800 w-24 inline-block">
-                    Weight
+                    Og'irligi
                   </span>
                   : {weight}
                 </p>
@@ -181,20 +184,20 @@ export default function ProductDetail() {
               {speciality && (
                 <p>
                   <span className="font-medium text-gray-800 w-24 inline-block">
-                    Speciality
+                    Spetsiallik
                   </span>
                   : {speciality}
                 </p>
               )}
               <p>
                 <span className="font-medium text-gray-800 w-24 inline-block">
-                  Stock
+                  Zaxira
                 </span>
-                : {stock} items
+                : {stock} mahsulot
               </p>
             </div>
 
-            {/* Цена */}
+            {/* Narxi */}
             <div className="flex items-center gap-3 mb-4">
               <span className="text-2xl font-black text-[#E44B26]">
                 ${price}
@@ -211,7 +214,7 @@ export default function ProductDetail() {
               )}
             </div>
 
-            {/* Бейджи */}
+            {/* Badge-lar */}
             <div className="flex gap-2 mb-5">
               {is_new && (
                 <span className="bg-[#3BB77E] text-white text-xs font-bold px-2 py-0.5 rounded">
@@ -230,9 +233,9 @@ export default function ProductDetail() {
               )}
             </div>
 
-            {/* Количество + кнопки */}
+            {/* Miqdori + tugmalar */}
             <div className="flex items-center gap-3 flex-wrap">
-              {/* Счётчик */}
+              {/* Hisob-kitob */}
               <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
                 <button
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -253,22 +256,31 @@ export default function ProductDetail() {
                 </button>
               </div>
 
-              {/* Добавить в корзину */}
+              {/* Savat qo'shish */}
               <button
                 onClick={handleAdd}
                 className="flex items-center gap-2 bg-[#E44B26] hover:bg-[#c93f1e]
                            text-white px-6 py-2.5 rounded-lg font-medium transition-colors"
               >
-                <ShoppingCart size={16} /> Add To Cart
+                <ShoppingCart size={16} /> Savat qo'shish
               </button>
 
-              {/* Вишлист */}
+              {/* Wishlist — sevimli bo'limiga qo'shish/o'chirish */}
               <button
-                className="w-10 h-10 border border-gray-200 rounded-lg flex items-center
-                                 justify-center text-gray-400 hover:text-[#E44B26] hover:border-[#E44B26]
-                                 transition-colors"
+                onClick={() => toggleWishlist(product)}
+                className={`w-10 h-10 rounded-lg flex items-center justify-center
+                           transition-colors font-medium
+                           ${
+                             isInWishlist
+                               ? "bg-red-600 text-white border border-red-600"
+                               : "border border-gray-200 text-gray-400 hover:text-[#E44B26] hover:border-[#E44B26]"
+                           }`}
+                title={isInWishlist ? "Wishlistda" : "Wishlistga qo'shish"}
               >
-                <Heart size={16} />
+                <Heart
+                  size={16}
+                  className={isInWishlist ? "fill-current" : ""}
+                />
               </button>
 
               {/* Просмотр */}

@@ -6,6 +6,7 @@ import {
   List,
   ChevronDown,
   ShoppingCart,
+  Heart,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProducts } from "../Api/products";
@@ -14,13 +15,14 @@ import ProductCard from "../Components/Ui/ProductCard";
 import Pagination from "../Components/Ui/Pagination";
 import Breadcrumb from "../Components/Ui/Breadcrumb";
 import useCartStore from "../Store/cartStore";
+import useWishlistStore from "../Store/wishlistStore";
 
 const SORT_OPTIONS = [
-  { value: "id.asc", label: "Featured" },
-  { value: "price.asc", label: "Price: Low to High" },
-  { value: "price.desc", label: "Price: High to Low" },
-  { value: "rating.desc", label: "Top Rated" },
-  { value: "created_at.desc", label: "Newest" },
+  { value: "id.asc", label: "Ajratilgan" },
+  { value: "price.asc", label: "Narxi: Kam dan Ko'p" },
+  { value: "price.desc", label: "Narxi: Ko'p dan Kam" },
+  { value: "rating.desc", label: "Eng Yaxshi Baholangan" },
+  { value: "created_at.desc", label: "Eng Yangi" },
 ];
 
 const PAGE_SIZE = 9;
@@ -38,9 +40,11 @@ function SkeletonCard() {
   );
 }
 
-// List-вид карточки
+// Ro'yxat-ko'rinishi kartasi
 function ProductListCard({ product }) {
   const addItem = useCartStore((s) => s.addItem);
+  const isInWishlist = useWishlistStore((s) => s.isInWishlist(product?.id));
+  const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
   const {
     id,
     name,
@@ -57,8 +61,27 @@ function ProductListCard({ product }) {
   return (
     <Link
       to={`/product/${id}`}
-      className="flex gap-4 border border-gray-100 rounded-xl p-4 hover:shadow-md transition-shadow group bg-white"
+      className="flex gap-4 border border-gray-100 rounded-xl p-4 hover:shadow-md transition-shadow group bg-white relative"
     >
+      {/* Wishlist tugmasi - o'ng tepada */}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleWishlist(product);
+        }}
+        className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center
+                     transition-all duration-200 z-10
+                     ${
+                       isInWishlist
+                         ? "bg-red-600 text-white"
+                         : "bg-white text-gray-400 hover:bg-red-50 hover:text-red-600 border border-gray-200"
+                     }`}
+        title={isInWishlist ? "Wishlistda" : "Wishlistga qo'shish"}
+      >
+        <Heart size={16} className={isInWishlist ? "fill-current" : ""} />
+      </button>
+
       <div className="w-32 h-32 flex-shrink-0 bg-gray-50 rounded-xl flex items-center justify-center overflow-hidden">
         <img
           src={image_url}
@@ -104,7 +127,7 @@ function ProductListCard({ product }) {
             className="ml-auto flex items-center gap-1.5 bg-[#E44B26] hover:bg-[#c93f1e]
                        text-white text-xs px-4 py-2 rounded transition-colors"
           >
-            <ShoppingCart size={13} /> Add to Cart
+            <ShoppingCart size={13} /> Savat qo'shish
           </button>
         </div>
       </div>
