@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/**
+ * CUSTOM UTILITY CLASSES FOR SCROLLBAR HIDING
+ * 
+ * scrollbar-hide: Hides the scrollbar while maintaining scroll functionality.
+ * Useful for carousels, horizontal product lists, and mobile-first designs.
+ * 
+ * Cross-browser compatible solution using:
+ * - Firefox: scrollbar-width property
+ * - Webkit (Chrome, Safari, Edge): ::-webkit-scrollbar pseudo-element
+ * - Works on both horizontal and vertical scrollbars
+ * 
+ * Usage: Apply "scrollbar-hide" class to any scrollable container
+ * Example: <div className="scrollbar-hide overflow-x-auto">...</div>
+ */
+@layer utilities {
+  .scrollbar-hide {
+    /* Firefox: Hide scrollbar completely */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Webkit browsers: Chrome, Safari, Edge */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

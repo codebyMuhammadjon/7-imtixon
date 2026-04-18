@@ -11,6 +11,8 @@ const Shop = lazy(() => import("../Pages/Shop.jsx"));
 const ProductDetail = lazy(() => import("../Pages/ProductDetail.jsx"));
 const Cart = lazy(() => import("../Pages/Cart.jsx"));
 const Checkout = lazy(() => import("../Pages/Checkout.jsx"));
+const AboutPage = lazy(() => import("../Pages/AboutPage.jsx"));
+const WishlistPage = lazy(() => import("../Pages/WishlistPage.jsx"));
 const BlogList = lazy(() => import("../Pages/BlogList.jsx"));
 const BlogDetail = lazy(() => import("../Pages/BlogDetail.jsx"));
 const FAQ = lazy(() => import("../Pages/FAQ.jsx"));
@@ -62,6 +64,22 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageLoader />}>
             <Cart />
+          </Suspense>
+        ),
+      },
+      {
+        path: "wishlist",
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <WishlistPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "about",
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <AboutPage />
           </Suspense>
         ),
       },
